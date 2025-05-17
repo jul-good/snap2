@@ -2,5 +2,16 @@
 name = "snap2"
 version = "0.1.0"
 edition = "2024"
+description = "A short description of your crate"
+license = "MIT" # Common choices; choose one or both
+repository = "https://github.com/your_username/your_repo" # Optional but recommended
+readme = "README.md"      # Optional but recommended
+keywords = ["cli", "tool"] # Up to 5 relevant keywords
+categories = ["command-line-utilities"] # Relevant categories
 
 [dependencies]
+anyhow = "1.0.98"
+rdev = { version = "0.5.3", features = ["unstable_grab"]}
+plist = "1.7.1"
+serde = "1.0.219"
+serde_derive = "1.0.219"
