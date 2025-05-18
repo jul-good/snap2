@@ -1,8 +1,8 @@
 use crate::app_launcher::launch_app;
 use crate::dock_reader;
-use rdev::{grab, Event, EventType, Key};
-use std::sync::atomic::{AtomicBool, Ordering};
 use anyhow::Context;
+use rdev::{Event, EventType, Key, grab};
+use std::sync::atomic::{AtomicBool, Ordering};
 
 pub fn start() -> anyhow::Result<()> {
     let right_cmd_pressed = AtomicBool::new(false);
