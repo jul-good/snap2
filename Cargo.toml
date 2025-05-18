@@ -8,6 +8,12 @@ repository = "https://github.com/jul-good/snap2"
 readme = "README.md"
 keywords = ["macos", "tool"]
 
+[package.metadata.bundle]
+name = "snap2"
+identifier = "net.jul-good.snap2"
+icon = ["app.icns"]
+version = "1.0"
+
 [dependencies]
 anyhow = "1.0.98"
 rdev = { version = "0.5.3", features = ["unstable_grab"] }

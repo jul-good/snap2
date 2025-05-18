@@ -1,0 +1,42 @@
+name: Build macOS App on Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-apple-darwin, aarch64-apple-darwin
+
+      - name: Install cargo-bundle
+        run: cargo install cargo-bundle
+
+      - name: Build macOS App
+        run: cargo bundle --release
+
+      - name: Rename App Bundle
+        run: |
+          mv target/release/bundle/osx/Snap2.app Snap2.app
+          zip -r Snap2-macOS.zip Snap2.app
+
+      - name: Upload App as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snap2-macOS
+          path: Snap2-macOS.zip
+
+      - name: Upload App to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Snap2-macOS.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
