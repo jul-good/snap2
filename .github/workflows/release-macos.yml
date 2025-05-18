@@ -2,7 +2,10 @@ name: Build macOS App on Release
 
 on:
   release:
-    types: [created]
+    types: [ created ]
+
+permissions:
+  contents: write
 
 jobs:
   build-macos:
