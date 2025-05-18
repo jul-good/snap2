@@ -28,18 +28,18 @@ jobs:
 
       - name: Rename App Bundle
         run: |
-          mv target/release/bundle/osx/Snap2.app Snap2.app
-          zip -r Snap2-macOS.zip Snap2.app
+          mv target/release/bundle/osx/snap2.app snap2.app
+          zip -r snap2-macOS.zip snap2.app
 
       - name: Upload App as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Snap2-macOS
-          path: Snap2-macOS.zip
+          name: snap2-macOS
+          path: snap2-macOS.zip
 
       - name: Upload App to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: Snap2-macOS.zip
+          files: snap2-macOS.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
