@@ -17,10 +17,6 @@ jobs:
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        override: true
-        components: rustfmt, clippy
 
     - name: Install cargo-packager
       run: cargo install cargo-packager --locked
@@ -28,9 +24,13 @@ jobs:
     - name: Build and package the app
       run: cargo packager --release
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
+    - name: Create and upload release
+      uses: softprops/action-gh-release@v2
       with:
-        name: snap2-macos-app
-        path: target/release/snap2.app
-        if-no-files-found: error
+        files: target/release/snap2.app
+        name: snap2 ${{ github.ref_name }}
+        body: Release for snap2 ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
