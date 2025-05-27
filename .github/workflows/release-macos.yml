@@ -12,33 +12,25 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-apple-darwin, aarch64-apple-darwin
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        components: rustfmt, clippy
 
-      - name: Install cargo-packager
-        run: cargo install cargo-packager --locked
+    - name: Install cargo-packager
+      run: cargo install cargo-packager --locked
 
-      - name: Build macOS App
-        run: cargo packager --release
+    - name: Build and package the app
+      run: cargo packager --release
 
-      - name: Rename App Bundle
-        run: |
-          mv target/release/snap2.app snap2.app
-
-      - name: Upload App as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: snap2.app
-          path: snap2.app
-
-      - name: Upload App to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: snap2.app
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: snap2-macos-app
+        path: target/release/snap2.app
+        if-no-files-found: error
