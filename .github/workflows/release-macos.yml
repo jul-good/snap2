@@ -17,6 +17,9 @@ jobs:
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
+      with:
+            toolchain: nightly
+            override: true
 
     - name: Install cargo-packager
       run: cargo install cargo-packager --locked
