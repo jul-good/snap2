@@ -11,7 +11,7 @@ keywords = ["macos", "tool"]
 [package.metadata.packager]
 product_name = "snap2"
 before-packaging-command = "cargo build --release"
-formats = ["app"]
+formats = ["dmg"]
 icons = ["app.icns"]
 macos = { background_app = true }
 

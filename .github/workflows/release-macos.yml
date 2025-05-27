@@ -12,33 +12,33 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-            toolchain: nightly
-            override: true
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
 
-    - name: Install cargo-packager
-      run: cargo install cargo-packager --locked
+      - name: Extract version from Cargo.toml
+        id: get_version
+        run: |
+          VERSION=$(awk -F'"' '/^version =/ {print $2}' Cargo.toml)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-    - name: Build and package the app
-      run: cargo packager --release
+      - name: Install cargo-packager
+        run: cargo install cargo-packager --locked
 
-    - name: Rename App Bundle
-      run: |
-        mv target/release/snap2.app snap2.app
-        zip -r snap2-macOS.zip snap2.app
+      - name: Build and package the app
+        run: cargo packager --release
 
-    - name: Create and upload release
-      uses: softprops/action-gh-release@v2
-      with:
-        files: snap2-macOS.zip
-        name: snap2 ${{ github.ref_name }}
-        body: Release for snap2 ${{ github.ref_name }}
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create and upload release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/release/snap2_${{ env.VERSION }}_aarch64.dmg
+          name: snap2 ${{ env.VERSION }}
+          body: Release for snap2 ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
