@@ -26,11 +26,15 @@ jobs:
       - name: Build macOS App
         run: cargo packager --release
 
+      - name: Rename App Bundle
+        run: |
+          mv target/release/snap2.app snap2.app
+
       - name: Upload App as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: snap2.app
-          path: target/release/snap2.app
+          path: snap2.app
 
       - name: Upload App to Release
         uses: softprops/action-gh-release@v1
