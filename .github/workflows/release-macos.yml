@@ -20,26 +20,21 @@ jobs:
         with:
           targets: x86_64-apple-darwin, aarch64-apple-darwin
 
-      - name: Install cargo-bundle
-        run: cargo install cargo-bundle
+      - name: Install cargo-packager
+        run: cargo install cargo-packager --locked
 
       - name: Build macOS App
-        run: cargo bundle --release
-
-      - name: Rename App Bundle
-        run: |
-          mv target/release/bundle/osx/snap2.app snap2.app
-          zip -r snap2-macOS.zip snap2.app
+        run: cargo packager --release
 
       - name: Upload App as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: snap2-macOS
-          path: snap2-macOS.zip
+          name: snap2.app
+          path: /target/release/snap2.app
 
       - name: Upload App to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: snap2-macOS.zip
+          files: snap2.app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

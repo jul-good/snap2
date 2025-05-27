@@ -8,11 +8,12 @@ repository = "https://github.com/jul-good/snap2"
 readme = "README.md"
 keywords = ["macos", "tool"]
 
-[package.metadata.bundle]
-name = "snap2"
-identifier = "net.jul-good.snap2"
-icon = ["app.icns"]
-version = "1.0"
+[package.metadata.packager]
+product_name = "snap2"
+before-packaging-command = "cargo build --release"
+formats = ["app"]
+icons = ["app.icns"]
+macos = { background_app = true }
 
 [dependencies]
 anyhow = "1.0.98"
