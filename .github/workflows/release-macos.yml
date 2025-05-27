@@ -27,10 +27,15 @@ jobs:
     - name: Build and package the app
       run: cargo packager --release
 
+    - name: Rename App Bundle
+      run: |
+        mv target/release/snap2.app snap2.app
+        zip -r snap2-macOS.zip snap2.app
+
     - name: Create and upload release
       uses: softprops/action-gh-release@v2
       with:
-        files: target/release/snap2.app
+        files: snap2-macOS.zip
         name: snap2 ${{ github.ref_name }}
         body: Release for snap2 ${{ github.ref_name }}
         draft: false
